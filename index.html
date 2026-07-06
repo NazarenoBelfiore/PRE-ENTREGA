@@ -69,7 +69,7 @@
                         "full": "0.75rem"
                     },
                     "spacing": {
-                        "edge-margin": "clamp(1rem, 4vw, 3rem)",
+                        "edge-margin": "clamp(2rem, 8vw, 8rem)",
                         "technical-grid": "0.5rem",
                         "section-gap": "clamp(4rem, 15vh, 12rem)",
                         "internal-gap": "1.5rem"
@@ -83,12 +83,12 @@
                         "data-point": ["Space Mono"]
                     },
                     "fontSize": {
-                        "headline-md": ["40px", {"lineHeight": "110%", "letterSpacing": "-0.02em", "fontWeight": "500"}],
-                        "display-lg-mobile": ["48px", {"lineHeight": "100%", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "body-lg": ["18px", {"lineHeight": "160%", "letterSpacing": "0em", "fontWeight": "400"}],
-                        "label-mono": ["12px", {"lineHeight": "140%", "letterSpacing": "0.1em", "fontWeight": "400"}],
-                        "display-lg": ["84px", {"lineHeight": "90%", "letterSpacing": "-0.04em", "fontWeight": "700"}],
-                        "data-point": ["14px", {"lineHeight": "120%", "letterSpacing": "0em", "fontWeight": "700"}]
+                        "headline-md": ["40px", {"lineHeight": "110%", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["48px", {"lineHeight": "100%", "letterSpacing": "0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "160%", "letterSpacing": "0.025em", "fontWeight": "400"}],
+                        "label-mono": ["12px", {"lineHeight": "140%", "letterSpacing": "0.12em", "fontWeight": "400"}],
+                        "display-lg": ["84px", {"lineHeight": "90%", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "data-point": ["14px", {"lineHeight": "120%", "letterSpacing": "0.02em", "fontWeight": "700"}]
                     },
                     "keyframes": {
                         "slide-in": {
@@ -127,12 +127,17 @@
 
         html {
             scroll-behavior: initial !important;
+            font-variant-ligatures: none !important;
+            font-feature-settings: "liga" 0, "clig" 0 !important;
         }
 
         body {
             background-color: #1b110e;
             color: #f3ded9;
             overflow-x: hidden;
+            font-variant-ligatures: none !important;
+            font-feature-settings: "liga" 0, "clig" 0 !important;
+            letter-spacing: 0.025em; /* Adjusted letter-spacing for more comfortable reading */
         }
         
         .hide-scrollbar::-webkit-scrollbar {
@@ -169,12 +174,20 @@
             cursor: pointer;
         }
         
-        @media (min-width: 768px) {
+        @media (min-width: 1024px) {
             .carousel-item.active {
-                width: 40%;
+                width: 38%;
             }
             .carousel-item.inactive {
-                width: 25%;
+                width: 29%;
+            }
+            
+            /* Constrain text width to prevent line wrapping/reflow during card expansion */
+            .carousel-text-box {
+                width: 35vw !important;
+                max-width: 500px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
             }
         }
         
@@ -185,14 +198,41 @@
         
         .reveal-on-scroll {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: transform, opacity;
+        }
+        
+        .reveal-up {
+            transform: translateY(40px);
+        }
+        
+        .reveal-down {
+            transform: translateY(-40px);
+        }
+        
+        .reveal-left {
+            transform: translateX(-45px);
+        }
+        
+        .reveal-right {
+            transform: translateX(45px);
+        }
+        
+        .reveal-scale {
+            transform: scale(0.96);
         }
         
         .reveal-visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translate(0) scale(1) !important;
         }
+        
+        .reveal-delay-100 { transition-delay: 100ms; }
+        .reveal-delay-150 { transition-delay: 150ms; }
+        .reveal-delay-200 { transition-delay: 200ms; }
+        .reveal-delay-300 { transition-delay: 300ms; }
+        .reveal-delay-400 { transition-delay: 400ms; }
+        .reveal-delay-450 { transition-delay: 450ms; }
         
         .specs-cover-container {
             position: absolute;
@@ -289,128 +329,9 @@
             transform: translateY(-50%) scaleX(1) !important;
         }
 
-        /* Module 2: Interactive Staggered Grid styling */
-        .performance-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            width: 100%;
-        }
-        
-        .performance-card {
-            width: 100%;
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: flex, transform;
-        }
-
-        @media (min-width: 1024px) {
-            .performance-grid {
-                flex-direction: row;
-                align-items: stretch;
-                min-height: 520px;
-            }
-            
-            /* Default non-hover state: balanced widths, same height */
-            .performance-card {
-                flex: 1;
-                transform: translateY(0);
-            }
-            
-            /* When the grid is hovered, but NOT this specific card (i.e. the other card is hovered) */
-            .performance-grid:hover .performance-card {
-                flex: 0.8;
-                transform: translateY(20px);
-            }
-            
-            /* When this specific card is hovered */
-            .performance-grid .performance-card:hover {
-                flex: 1.35;
-                transform: translateY(-20px);
-            }
-        }
         /* Thin terrains section icons (Module 1.5) */
         #terrains .material-symbols-outlined {
             font-variation-settings: 'wght' 200;
-        }
-
-        /* Module 2: Image position adjustments (visible in static state) */
-        .amateur-img {
-            object-fit: cover;
-            object-position: center 25%;
-            width: 100%;
-            height: 100%;
-            opacity: 1;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        
-        .pro-img {
-            object-fit: cover;
-            object-position: center 28%;
-            width: 100%;
-            height: 100%;
-            opacity: 1;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        /* Scale images slightly on card hover */
-        .performance-card:hover .amateur-img,
-        .performance-card:hover .pro-img {
-            transform: scale(1.03);
-        }
-
-        /* Module 2: Card text and badge styling (Mobile-first visible, desktop hover-interactive) */
-        .performance-card-text {
-            opacity: 1;
-            max-height: 250px;
-            overflow: hidden;
-            transform: translateY(0);
-            transition: opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1), transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), max-height 0.7s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .badge-label {
-            display: inline-block;
-            font-family: var(--font-label-mono, monospace);
-            font-size: 11px;
-            color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            padding: 4px 12px;
-            border-radius: 9999px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            font-weight: bold;
-            transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1);
-            margin-bottom: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        @media (min-width: 1024px) {
-            .performance-card-text {
-                opacity: 0;
-                max-height: 0;
-                transform: translateY(15px);
-            }
-
-            .performance-card:hover .performance-card-text {
-                opacity: 1;
-                max-height: 250px;
-                transform: translateY(0);
-            }
-
-            .badge-label {
-                font-size: 14px;
-                padding: 10px 24px;
-                margin-bottom: 0;
-                letter-spacing: 0.2em;
-            }
-            
-            .performance-card:hover .badge-label {
-                font-size: 11px;
-                padding: 4px 12px;
-                margin-bottom: 12px;
-                letter-spacing: 0.15em;
-            }
         }
 
         /* Expand touch target for mobile hotspot dots without visual enlargement */
@@ -430,36 +351,54 @@
             }
         }
 
-        /* Customizer Spotlight and ground reflection styling */
-        .customizer-spotlight-cone {
-            position: absolute;
-            top: -15%;
-            left: 0;
-            right: 0;
-            height: 135%;
-            background: 
-                radial-gradient(circle at 50% 10%, rgba(254, 107, 0, 0.52) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 90%, rgba(254, 107, 0, 0.25) 0%, transparent 65%);
-            pointer-events: none;
-            mix-blend-mode: screen;
-            z-index: 1;
+
+    /* ================================================================
+       MOBILE RESPONSIVE OVERRIDES  (max-width: 1023px)
+       ================================================================ */
+    @media (max-width: 1023px) {
+
+        /* ---- 1. HERO (#experience) ---- */
+        /* Remove desktop-only left padding and use edge-margin */
+        #experience .relative.z-10 {
+            padding-bottom: 4rem !important;
         }
 
-        .customizer-spotlight-cone::before {
-            content: '';
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 60px;
-            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.85) 0%, rgba(254, 107, 0, 0.45) 60%, transparent 100%);
-            filter: blur(10px);
-            pointer-events: none;
+        /* ---- 2. TERRAINS (#terrains) ---- */
+        #terrains > div {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 2.5rem 1rem !important;
+            justify-items: center !important;
         }
-    /* Mobile General, Modalidades, Carousel, and Customizer Overrides */
-    @media (max-width: 1023px) {
-        /* Módulo 2 (Modalidades) Mobile layout */
+        #terrains .material-symbols-outlined {
+            font-size: 64px !important;
+        }
+        #terrains .font-label-mono {
+            font-size: 11px !important;
+            letter-spacing: 0.12em !important;
+        }
+
+        /* ---- 3. ENFOQUE (#enfoque) ---- */
+        /* Compact the bike image to 16:9 ratio instead of 4:3 in mobile */
+        #enfoque .lg\\:col-span-6.relative.w-full {
+            aspect-ratio: 16/9 !important;
+            height: auto !important;
+            border-radius: 1rem !important;
+        }
+
+        /* ---- 4. PILARES (#mastery) ---- */
+        /* Reduce excessive card height on mobile to prevent 1100px+ scroll */
+        #mastery .grid > div[class*="reveal-on-scroll"] {
+            min-height: 260px !important;
+        }
+
+        /* ---- 5. SPECS INTERACTIVOS (#specs-interactive) ---- */
+        /* Prevent scale overflow on mobile */
+        #specs-interactive .scale-\\[0\\.75\\] {
+            transform: scale(0.75) !important;
+        }
+
+        /* ---- 6. MÓDULO 2 (Modalidades/Performance) Mobile layout ---- */
         .performance-card {
             flex-direction: column !important;
             min-height: auto !important;
@@ -473,7 +412,7 @@
             aspect-ratio: 16/9 !important;
             height: auto !important;
         }
-        .performance-card img.amateur-img, 
+        .performance-card img.amateur-img,
         .performance-card img.pro-img {
             position: absolute !important;
             top: 0 !important;
@@ -498,87 +437,139 @@
             margin-bottom: 0.75rem !important;
         }
 
-        /* Módulo 5.5 (Customización / Aspectos) Mobile layout */
+        /* ---- 7. CAROUSEL (#components) ---- */
+        #components .relative.w-full.h-\\[45vh\\] {
+            height: 45vh !important;
+            min-height: 320px;
+            overflow: hidden !important;
+            position: relative !important;
+        }
+        #components .carousel-item {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: translateX(100%);
+            transition: opacity 0.25s ease, transform 0.25s ease !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+        }
+        #components .carousel-item.active {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transform: translateX(0) !important;
+            z-index: 10 !important;
+        }
+        #components .carousel-item.inactive {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        .tooltip-line {
+            display: none !important;
+        }
+        .hotspot-tooltip {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transform: none !important;
+        }
+        .carousel-dot {
+            margin: 0 2px;
+        }
+        .performance-grid {
+            gap: 1.5rem !important;
+        }
+
+        /* ---- 8. CUSTOMIZER (#customizer) — REESTRUCTURA COMPLETA ---- */
+
+        /* Section container: stacks vertically, auto height */
         #customizer {
-            padding-top: 0 !important;
+            padding: 0 !important;
             min-height: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
         }
-        #customizer .absolute.inset-0.z-0 {
-            position: absolute !important;
+
+        /* Visual area: exact 16:9 aspect ratio matching the mobile images, adjusting dynamically with zero gaps */
+        #customizer-visual-area {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
             height: auto !important;
-            aspect-ratio: 16/9 !important;
-            bottom: auto !important;
+            min-height: 0 !important;
+            overflow: hidden;
+            background: #1b110e;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+            margin: 1rem 0 1.5rem;
         }
-        .customizer-bg {
+
+        /* BG stack container inside the frame */
+        #customizer-visual-area .customizer-bgs {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        /* Aspect images: fill container exactly with no empty space */
+        #customizer-visual-area .customizer-bg {
             position: absolute !important;
+            inset: 0 !important;
             width: 100% !important;
             height: 100% !important;
             object-fit: cover !important;
-            top: 0 !important;
-            bottom: auto !important;
+            transform: none !important;
         }
-        #customizer .bg-gradient-to-r {
+
+        /* Hide the spotlight cone on mobile */
+        #customizer-visual-area .customizer-spotlight-cone {
             display: none !important;
         }
-    }
 
-    @media (max-width: 767px) {
-        /* Módulo 5 (Tecnología de Punta) Carousel Mobile layout */
-        .carousel-item { 
-            width: 100% !important; 
+        /* Hide the desktop left-gradient overlay */
+        #customizer > .bg-gradient-to-r {
+            display: none !important;
         }
-        .carousel-item.inactive { 
-            display: none !important; 
-        }
-        .carousel-item.active { 
-            width: 100% !important; 
-        }
-        
-        #components .carousel-item.active {
+
+        /* Swatch container below the image */
+        #customizer-interaction-panel {
+            position: relative;
+            z-index: 10;
+            background: transparent;
+            padding: 0.5rem 0 !important;
             display: flex !important;
-            flex-direction: column !important;
-            height: auto !important;
-            background: #281d1a !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            padding: 0 !important;
-        }
-        #components .carousel-item img {
-            position: relative !important;
-            width: 100% !important;
-            aspect-ratio: 16/9 !important;
-            height: auto !important;
-            object-fit: cover !important;
-        }
-        #components .carousel-text-box {
-            position: relative !important;
-            opacity: 1 !important;
-            padding: 1.5rem !important;
-            transform: none !important;
-            background: transparent !important;
-        }
-        #components .carousel-text-box h3 {
-            color: #ffffff !important;
-        }
-        #components .carousel-text-box p {
-            color: rgba(255, 255, 255, 0.7) !important;
-        }
-        #components .relative.w-full.h-\[45vh\] {
-            height: auto !important;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .tooltip-line { 
-            display: none !important; 
+        /* Circle swatches logic */
+        .customizer-swatch-circle {
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            transform: scale(1.0);
+            transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.25s ease, box-shadow 0.25s ease;
         }
-        .hotspot-tooltip { 
-            opacity: 1 !important; 
-            pointer-events: auto !important; 
-            transform: none !important; 
+        .customizer-swatch-circle.active {
+            border-color: #fe6b00 !important;
+            transform: scale(1.15);
+            box-shadow: 0 0 14px rgba(254, 107, 0, 0.5);
         }
-        .carousel-dot { 
-            margin: 0 2px; 
+
+        #customizer {
+            padding-top: 120px !important;
+            padding-bottom: 60px !important;
         }
-        .performance-grid { 
-            gap: 1.5rem !important; 
+
+        /* ---- 9. REVIEWS (#reviews) ---- */
+        /* Reduce excessive title bottom margin on mobile */
+        #reviews .text-center.mb-16 {
+            margin-bottom: 2rem !important;
+        }
+        #reviews .grid > div {
+            min-height: auto !important;
+            padding: 1.25rem !important;
         }
     }
 </style>
@@ -591,12 +582,12 @@
             <img src="assets/venzologo.png" alt="Venzo" class="h-6 md:h-8 w-auto object-contain transition-opacity duration-300 hover:opacity-85" />
         </a>
         <div class="hidden md:flex gap-8 items-center">
-            <a class="nav-link relative pb-1 font-label-mono text-label-mono uppercase transition-all duration-300 text-on-surface/80 font-bold hover:text-secondary" href="#performance">
-                MODALIDADES
+            <a class="nav-link relative pb-1 font-label-mono text-label-mono uppercase transition-all duration-300 text-on-surface/80 font-bold hover:text-secondary" href="#enfoque">
+                ENFOQUE
                 <span class="absolute bottom-0 left-0 w-full h-[2px] bg-secondary scale-x-0 origin-left transition-transform duration-300"></span>
             </a>
             <a class="nav-link relative pb-1 font-label-mono text-label-mono uppercase transition-all duration-300 text-on-surface/80 font-bold hover:text-secondary" href="#mastery">
-                MAESTRÍA
+                RENDIMIENTO
                 <span class="absolute bottom-0 left-0 w-full h-[2px] bg-secondary scale-x-0 origin-left transition-transform duration-300"></span>
             </a>
             <a class="nav-link relative pb-1 font-label-mono text-label-mono uppercase transition-all duration-300 text-on-surface/80 font-bold hover:text-secondary" href="#specs-interactive">
@@ -640,17 +631,17 @@
             
             <!-- Navigation Links -->
             <div class="flex flex-col gap-8">
-                <a class="mobile-nav-link font-label-mono text-[14px] tracking-[0.15em] uppercase text-on-surface font-bold hover:text-secondary transition-colors duration-300" href="#performance">MODALIDADES</a>
-                <a class="mobile-nav-link font-label-mono text-[14px] tracking-[0.15em] uppercase text-on-surface font-bold hover:text-secondary transition-colors duration-300" href="#mastery">MAESTRÍA</a>
+                <a class="mobile-nav-link font-label-mono text-[14px] tracking-[0.15em] uppercase text-on-surface font-bold hover:text-secondary transition-colors duration-300" href="#enfoque">ENFOQUE</a>
+                <a class="mobile-nav-link font-label-mono text-[14px] tracking-[0.15em] uppercase text-on-surface font-bold hover:text-secondary transition-colors duration-300" href="#mastery">RENDIMIENTO</a>
                 <a class="mobile-nav-link font-label-mono text-[14px] tracking-[0.15em] uppercase text-on-surface font-bold hover:text-secondary transition-colors duration-300" href="#specs-interactive">COMPONENTES</a>
                 <a class="mobile-nav-link font-label-mono text-[14px] tracking-[0.15em] uppercase text-on-surface font-bold hover:text-secondary transition-colors duration-300" href="#components">TECNOLOGÍA</a>
                 <a class="mobile-nav-link font-label-mono text-[14px] tracking-[0.15em] uppercase text-on-surface font-bold hover:text-secondary transition-colors duration-300" href="#customizer">ASPECTOS</a>
+                <a class="mobile-nav-link font-label-mono text-[14px] tracking-[0.15em] uppercase text-on-surface font-bold hover:text-secondary transition-colors duration-300" href="#reviews">RESEÑAS</a>
             </div>
         </div>
         
-        <!-- CTA / Footer -->
+        <!-- Footer -->
         <div class="flex flex-col gap-6">
-            <a id="mobile-menu-reserve" class="w-full h-12 flex items-center justify-center bg-white text-[#1b110e] rounded-xl font-label-mono text-[12px] tracking-widest uppercase font-bold transition-all duration-300 hover:bg-white/90" href="#reviews">RESEÑAS</a>
             <div class="font-label-mono text-[9px] tracking-wider opacity-40 text-center">
                 © 2024 VENZO VANGUARD
             </div>
@@ -668,139 +659,163 @@
 </div>
 <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(27,17,14,0.1)_0%,rgba(27,17,14,0)_30%,rgba(27,17,14,0.6)_70%,rgba(27,17,14,1)_100%)] z-0"></div>
 <div class="absolute inset-0 bg-gradient-to-r from-[#1b110e]/75 via-[#1b110e]/20 to-transparent z-0"></div>
-<div class="relative z-10 w-full px-edge-margin md:pl-16 lg:pl-24 xl:pl-32 flex flex-col items-start text-left mt-auto pb-24 md:pb-36 max-w-4xl md:max-w-3xl">
+<div class="relative z-10 w-full px-edge-margin md:pl-16 lg:pl-24 xl:pl-32 flex flex-col items-start text-left mt-16 md:mt-auto pb-12 md:pb-36 max-w-4xl md:max-w-3xl">
 <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-3 tracking-[0.06em] md:tracking-[0.08em] uppercase font-normal leading-none opacity-0 animate-[fade-in_0.5s_ease-out_0.5s_forwards]">CONTROL ABSOLUTO</h1>
 <p class="font-headline-md text-[24px] md:text-[36px] text-secondary mb-8 tracking-[0.04em] md:tracking-[0.06em] uppercase font-bold leading-tight opacity-0 animate-[fade-in_0.5s_ease-out_0.6s_forwards]">EN CUALQUIER RELIEVE</p>
 <div class="font-body-lg text-[16px] md:text-[18px] text-on-surface-variant/90 max-w-xl mb-10 leading-relaxed opacity-0 animate-[fade-in_0.5s_ease-out_0.7s_forwards] font-normal">
     Diseñada para dominar cada sendero.<br/>
     Ligera, rígida y lista para rendir al máximo.
 </div>
-<div class="flex flex-col sm:flex-row gap-4 justify-start items-center w-full opacity-0 animate-[fade-in_0.5s_ease-out_0.8s_forwards]">
-    <a href="#performance" class="w-full sm:w-48 h-14 flex items-center justify-center bg-white/5 backdrop-blur-sm hover:bg-white/10 text-white rounded-xl font-label-mono text-[13px] tracking-widest uppercase transition-all duration-300 border border-white/10 font-bold select-none cursor-pointer">
-        DESCUBRE MÁS
-    </a>
-    <a href="#reviews" class="w-full sm:w-52 h-14 flex items-center justify-center bg-white hover:bg-white/90 text-[#1b110e] rounded-xl font-label-mono text-[13px] tracking-widest uppercase transition-all duration-300 font-bold select-none cursor-pointer group">
-        RESEÑAS
-        <svg class="w-4 h-4 ml-3 transition-transform duration-300 group-hover:translate-x-1.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-        </svg>
-    </a>
-</div>
 </div>
 </section>
 
 <!-- Módulo Intermedio (Terrenos de Conquista) -->
 <section class="py-20 md:py-28 px-edge-margin relative z-20 overflow-hidden" id="terrains">
-    <div class="max-w-[90rem] mx-auto w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-12 md:gap-20 justify-center items-center reveal-on-scroll">
+    <div class="max-w-[90rem] mx-auto w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-12 md:gap-20 justify-center items-center">
         <!-- Terreno 1: Calle -->
-        <div class="flex flex-col items-center gap-6 group cursor-default">
+        <div class="flex flex-col items-center gap-6 group cursor-default reveal-on-scroll reveal-up">
             <span class="material-symbols-outlined text-[64px] md:text-[72px] text-secondary transition-all duration-300 group-hover:text-[#fe6b00] group-hover:scale-110">road</span>
             <span class="font-label-mono text-[14px] md:text-[15px] text-on-surface-variant/80 tracking-[0.22em] uppercase transition-colors duration-300 group-hover:text-white">CALLE</span>
         </div>
 
         <!-- Terreno 2: Tierra -->
-        <div class="flex flex-col items-center gap-6 group cursor-default">
+        <div class="flex flex-col items-center gap-6 group cursor-default reveal-on-scroll reveal-up reveal-delay-100">
             <span class="material-symbols-outlined text-[64px] md:text-[72px] text-secondary transition-all duration-300 group-hover:text-[#fe6b00] group-hover:scale-110">terrain</span>
             <span class="font-label-mono text-[14px] md:text-[15px] text-on-surface-variant/80 tracking-[0.22em] uppercase transition-colors duration-300 group-hover:text-white">TIERRA</span>
         </div>
 
         <!-- Terreno 3: Piedra -->
-        <div class="flex flex-col items-center gap-6 group cursor-default">
+        <div class="flex flex-col items-center gap-6 group cursor-default reveal-on-scroll reveal-up reveal-delay-200">
             <span class="material-symbols-outlined text-[64px] md:text-[72px] text-secondary transition-all duration-300 group-hover:text-[#fe6b00] group-hover:scale-110">landslide</span>
             <span class="font-label-mono text-[14px] md:text-[15px] text-on-surface-variant/80 tracking-[0.22em] uppercase transition-colors duration-300 group-hover:text-white">PIEDRA</span>
         </div>
 
         <!-- Terreno 4: Arena -->
-        <div class="flex flex-col items-center gap-6 group cursor-default">
+        <div class="flex flex-col items-center gap-6 group cursor-default reveal-on-scroll reveal-up reveal-delay-300">
             <span class="material-symbols-outlined text-[64px] md:text-[72px] text-secondary transition-all duration-300 group-hover:text-[#fe6b00] group-hover:scale-110">grain</span>
             <span class="font-label-mono text-[14px] md:text-[15px] text-on-surface-variant/80 tracking-[0.22em] uppercase transition-colors duration-300 group-hover:text-white">ARENA</span>
         </div>
 
         <!-- Terreno 5: Barro -->
-        <div class="flex flex-col items-center gap-6 group cursor-default col-span-2 sm:col-span-1">
+        <div class="flex flex-col items-center gap-6 group cursor-default col-span-2 sm:col-span-1 reveal-on-scroll reveal-up reveal-delay-400">
             <span class="material-symbols-outlined text-[64px] md:text-[72px] text-secondary transition-all duration-300 group-hover:text-[#fe6b00] group-hover:scale-110">water_drop</span>
             <span class="font-label-mono text-[14px] md:text-[15px] text-on-surface-variant/80 tracking-[0.22em] uppercase transition-colors duration-300 group-hover:text-white">BARRO</span>
         </div>
     </div>
 </section>
 
-<!-- Módulo 2 (Modalidades) -->
-<section class="py-24 md:py-36 px-edge-margin bg-surface" id="performance">
-<div class="max-w-[90rem] mx-auto w-full lg:aspect-[16/9] lg:max-h-[70vh] flex flex-col justify-center relative">
-    <!-- Section Header -->
-    <div class="max-w-3xl text-center mx-auto mb-16 md:mb-24 reveal-on-scroll">
-        <h2 class="font-display-lg text-[32px] md:text-[56px] text-white tracking-tighter uppercase font-bold leading-tight">
-            MODALIDADES
-        </h2>
-        <p class="font-body-lg text-[16px] md:text-[18px] text-on-surface-variant max-w-2xl mt-4 leading-relaxed mx-auto">
-            Una misma ingeniería capaz de dominar el dinamismo cotidiano de la ciudad y devorar los senderos de montaña más exigentes y profesionales.
-        </p>
-    </div>
+<!-- Módulo 2 (Enfoque) -->
+<section class="relative bg-surface overflow-hidden lg:h-screen lg:flex lg:flex-col lg:justify-center py-12 lg:py-0 lg:pt-20 lg:pb-8 px-edge-margin" id="enfoque">
+    <div class="max-w-[90rem] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 lg:items-stretch relative z-10">
+        
+        <!-- Editorial & Enfoque (Columna Izquierda - 6/12 de ancho) -->
+        <div class="lg:col-span-6 flex flex-col justify-start reveal-on-scroll reveal-left order-2 lg:order-1">
+            <h2 class="font-display-lg text-[32px] md:text-[56px] text-white tracking-normal uppercase font-bold leading-tight mb-8">
+                DISEÑADA PARA TODOS
+            </h2>
 
-    <!-- Asymmetric Staggered Flex Grid -->
-    <div class="performance-grid lg:gap-8 xl:gap-12">
-        <!-- Card: Amateur -->
-        <div class="performance-card relative group overflow-hidden rounded-2xl p-8 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/10 shadow-[0_12px_32px_rgba(27,17,14,0.3)] hover:shadow-[0_0_50px_rgba(254,107,0,0.12)] hover:border-secondary/30 reveal-on-scroll min-h-[480px] flex flex-col justify-between">
-            <div class="absolute inset-0 z-0">
-                <!-- Background Image (lifestyle photo in the city) -->
-                <img alt="Amateur MTB City Ride" class="amateur-img transition-all duration-700 ease-out pointer-events-none" src="assets/amateur_real.png"/>
-                <div class="absolute inset-0 opacity-20 mix-blend-multiply bg-[#4a3126] transition-all duration-700 ease-out"></div>
-                <!-- Bottom gradient for text readability -->
-                <div class="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none"></div>
-            </div>
-            <div class="relative z-10 flex flex-col items-start mt-auto w-full">
-                <!-- Badge (visible in static, shrinks on hover) -->
-                <span class="badge-label">LA CIUDAD</span>
-                <!-- Title & Description (hidden in static, reveal on hover) -->
-                <div class="performance-card-text w-full lg:w-[340px]">
-                    <h3 class="font-headline-md text-[24px] md:text-[28px] text-white font-bold uppercase leading-tight mb-3 tracking-tight">LA CIUDAD A TU PROPIO RITMO.</h3>
-                    <p class="font-body-lg text-[14px] md:text-[15px] text-on-surface-variant leading-relaxed">La agilidad y diseño de la Amphion adaptados perfectamente al dinamismo y cotidianeidad de las calles de la ciudad.</p>
+            <!-- Grid de Enfoque (Principiantes y Expertos) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+                <!-- Principiantes -->
+                <div class="flex flex-col gap-5 p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-secondary/20 hover:bg-white/[0.03] transition-all duration-300">
+                    <div class="flex items-center gap-2.5 text-secondary">
+                        <span class="material-symbols-outlined text-[22px]">explore</span>
+                        <span class="font-label-mono text-[12px] md:text-[13px] tracking-widest font-bold uppercase">PRINCIPIANTES</span>
+                    </div>
+
+                    <div class="w-10 h-[1px] bg-white/10"></div>
+
+                    <!-- Lista de características -->
+                    <ul class="flex flex-col gap-4">
+                        <li class="flex items-start gap-3 text-on-surface-variant font-body-lg text-[16px] md:text-[18px] leading-snug">
+                            <span class="w-2 h-2 rounded-full bg-secondary mt-[9px] shrink-0"></span>
+                            Manejo 100% intuitivo
+                        </li>
+                        <li class="flex items-start gap-3 text-on-surface-variant font-body-lg text-[16px] md:text-[18px] leading-snug">
+                            <span class="w-2 h-2 rounded-full bg-secondary mt-[9px] shrink-0"></span>
+                            Seguridad y control absoluto
+                        </li>
+                        <li class="flex items-start gap-3 text-on-surface-variant font-body-lg text-[16px] md:text-[18px] leading-snug">
+                            <span class="w-2 h-2 rounded-full bg-secondary mt-[9px] shrink-0"></span>
+                            Progresión gradual y evolutiva
+                        </li>
+                        <li class="flex items-start gap-3 text-on-surface-variant font-body-lg text-[16px] md:text-[18px] leading-snug">
+                            <span class="w-2 h-2 rounded-full bg-secondary mt-[9px] shrink-0"></span>
+                            Geometría estable de confianza
+                        </li>
+                        <li class="flex items-start gap-3 text-on-surface-variant font-body-lg text-[16px] md:text-[18px] leading-snug">
+                            <span class="w-2 h-2 rounded-full bg-secondary mt-[9px] shrink-0"></span>
+                            Confort en largas distancias
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Expertos -->
+                <div class="flex flex-col gap-5 p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-secondary/20 hover:bg-white/[0.03] transition-all duration-300">
+                    <div class="flex items-center gap-2.5 text-secondary">
+                        <span class="material-symbols-outlined text-[22px]">workspace_premium</span>
+                        <span class="font-label-mono text-[12px] md:text-[13px] tracking-widest font-bold uppercase">EXPERTOS</span>
+                    </div>
+
+                    <div class="w-10 h-[1px] bg-white/10"></div>
+
+                    <!-- Lista de características -->
+                    <ul class="flex flex-col gap-4">
+                        <li class="flex items-start gap-3 text-on-surface-variant font-body-lg text-[16px] md:text-[18px] leading-snug">
+                            <span class="w-2 h-2 rounded-full bg-secondary mt-[9px] shrink-0"></span>
+                            Personalización al 100%
+                        </li>
+                        <li class="flex items-start gap-3 text-on-surface-variant font-body-lg text-[16px] md:text-[18px] leading-snug">
+                            <span class="w-2 h-2 rounded-full bg-secondary mt-[9px] shrink-0"></span>
+                            Componentes de alto rendimiento
+                        </li>
+                        <li class="flex items-start gap-3 text-on-surface-variant font-body-lg text-[16px] md:text-[18px] leading-snug">
+                            <span class="w-2 h-2 rounded-full bg-secondary mt-[9px] shrink-0"></span>
+                            Conexión total entre ciclista y bicicleta
+                        </li>
+                        <li class="flex items-start gap-3 text-on-surface-variant font-body-lg text-[16px] md:text-[18px] leading-snug">
+                            <span class="w-2 h-2 rounded-full bg-secondary mt-[9px] shrink-0"></span>
+                            Máxima rigidez torsional
+                        </li>
+                        <li class="flex items-start gap-3 text-on-surface-variant font-body-lg text-[16px] md:text-[18px] leading-snug">
+                            <span class="w-2 h-2 rounded-full bg-secondary mt-[9px] shrink-0"></span>
+                            Eficiencia de pedaleo
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Card: Pro -->
-        <div class="performance-card relative group overflow-hidden rounded-2xl p-8 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/10 shadow-[0_12px_32px_rgba(27,17,14,0.3)] hover:shadow-[0_0_50px_rgba(254,107,0,0.12)] hover:border-secondary/30 reveal-on-scroll min-h-[480px] flex flex-col justify-between">
-            <div class="absolute inset-0 z-0">
-                <!-- Background Image (lifestyle photo of professional on mountain trail) -->
-                <img alt="Pro MTB Trail Ride" class="pro-img transition-all duration-700 ease-out pointer-events-none" src="assets/pro_real.png"/>
-                <div class="absolute inset-0 opacity-20 mix-blend-multiply bg-[#4a3126] transition-all duration-700 ease-out"></div>
-                <!-- Bottom gradient for text readability -->
-                <div class="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none"></div>
-            </div>
-            <div class="relative z-10 flex flex-col items-start mt-auto w-full">
-                <!-- Badge (visible in static, shrinks on hover) -->
-                <span class="badge-label">OFF ROAD</span>
-                <!-- Title & Description (hidden in static, reveal on hover) -->
-                <div class="performance-card-text w-full lg:w-[340px]">
-                    <h3 class="font-headline-md text-[24px] md:text-[28px] text-white font-bold uppercase leading-tight mb-3 tracking-tight">CONQUISTA LA ADRENALINA MÁS EXTREMA.</h3>
-                    <p class="font-body-lg text-[14px] md:text-[15px] text-on-surface-variant leading-relaxed">La máxima resistencia y tracción de la Amphion preparadas para las aventuras más exigentes y profesionales del trail off-road.</p>
-                </div>
+        <!-- Showcase de la Bicicleta (Columna Derecha - 6/12) -->
+        <div class="lg:col-span-6 relative w-full aspect-[16/10] lg:aspect-auto rounded-3xl border border-white/10 overflow-hidden shadow-2xl reveal-on-scroll reveal-right order-1 lg:order-2">
+            <div class="relative lg:absolute lg:inset-0 w-full h-full">
+                <img class="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-[1.02]" src="assets/pro_real.png" alt="Venzo Amphion MTB Trail"/>
             </div>
         </div>
+
     </div>
-</div>
 </section>
-<!-- Módulo 3 (Maestría Absoluta) -->
-<section class="relative bg-background overflow-hidden py-24 md:py-36 px-edge-margin" id="mastery">
-    <div class="relative z-10 max-w-[90rem] mx-auto w-full lg:aspect-[16/9] lg:max-h-[70vh] flex flex-col justify-center gap-16">
+
+<!-- Módulo 3 (Rendimiento Absoluto) -->
+<section class="relative bg-background overflow-hidden lg:h-screen lg:flex lg:flex-col lg:justify-center py-12 lg:py-0 lg:pt-20 lg:pb-8 px-edge-margin" id="mastery">
+    <div class="relative z-10 max-w-[90rem] mx-auto w-full flex flex-col justify-center gap-8 lg:gap-12">
         <!-- Section Header -->
-        <div class="max-w-3xl text-center mx-auto reveal-on-scroll">
-            <h2 class="font-display-lg text-[32px] md:text-[56px] text-white tracking-tighter uppercase font-bold leading-tight">
-                MAESTRÍA CONCEPTUAL
+        <div class="max-w-3xl text-center mx-auto reveal-on-scroll reveal-up">
+            <h2 class="font-display-lg text-[32px] md:text-[56px] text-white tracking-normal uppercase font-bold leading-tight">
+                Una bicicleta superior
             </h2>
             <p class="font-body-lg text-[16px] md:text-[18px] text-on-surface-variant max-w-2xl mt-4 leading-relaxed mx-auto">
-                La Venzo Amphion no se construyó simplemente sumando piezas; se concibió como un organismo unificado. Nos enfocamos en tres pilares de pilotaje que transforman la física del trail en sensaciones puras de control.
+                La Venzo Amphion está diseñada como un sistema único. Nos enfocamos en tres pilares clave para darte la mayor estabilidad, ligereza y control en cada salida, sin importar tu nivel.
             </p>
         </div>
 
         <!-- Pillars Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 w-full">
             <!-- Pillar 1: Geometría Adaptativa & Dirección Lanzada (Descensos) -->
-            <div class="relative group overflow-hidden rounded-2xl p-8 bg-white/[0.02] backdrop-blur-xl border border-white/10 flex flex-col justify-between min-h-[380px] transition-all duration-500 hover:border-secondary/30 hover:shadow-[0_12px_40px_rgba(254,107,0,0.08)] reveal-on-scroll">
+            <div class="relative group overflow-hidden rounded-2xl p-6 lg:p-5 bg-white/[0.02] backdrop-blur-xl border border-white/10 flex flex-col justify-between min-h-[340px] lg:min-h-[290px] transition-all duration-500 hover:border-secondary/30 hover:shadow-[0_12px_40px_rgba(254,107,0,0.08)] reveal-on-scroll reveal-up">
                 <div>
                     <!-- SVG Illustration (Slack Headtube Geometry) -->
-                    <div class="w-full h-40 flex items-center justify-center mb-6 overflow-hidden rounded-xl bg-black/20 border border-white/5 relative">
+                    <div class="w-full h-32 lg:h-28 flex items-center justify-center mb-4 lg:mb-3 overflow-hidden rounded-xl bg-black/20 border border-white/5 relative">
                         <svg class="w-full h-full p-4 text-white/20 transition-transform duration-700 ease-out group-hover:scale-105" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <!-- Ground reference -->
                             <line x1="20" y1="80" x2="180" y2="80" stroke="currentColor" stroke-dasharray="4 4" stroke-width="0.75" />
@@ -816,28 +831,27 @@
                     </div>
                     
                     <!-- Card Header -->
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-secondary group-hover:bg-secondary/10 group-hover:border-secondary/20 transition-all duration-300">
-                            <span class="material-symbols-outlined text-[20px]">route</span>
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-secondary group-hover:bg-secondary/10 group-hover:border-secondary/20 transition-all duration-300">
+                            <span class="material-symbols-outlined text-[18px]">route</span>
                         </div>
-                        <h3 class="font-headline-md text-[20px] text-white uppercase font-bold tracking-wide">Geometría Adaptativa</h3>
+                        <h3 class="font-headline-md text-[18px] text-white uppercase font-bold tracking-wide">Estabilidad en Bajadas</h3>
                     </div>
                 </div>
 
                 <!-- Solution Description -->
                 <div class="mt-auto">
-                    <h4 class="font-label-mono text-[11px] text-white tracking-widest uppercase mb-1">GEOMETRÍA DE DIRECCIÓN LANZADA</h4>
-                    <p class="font-body-lg text-[15px] md:text-[16px] text-on-surface-variant leading-relaxed">
-                        Ángulo de ataque de <span class="text-secondary font-bold">68.5°</span> y mayor distancia entre ejes para un control absoluto y estabilidad implacable en descensos técnicos.
+                    <p class="font-body-lg text-[13px] md:text-[14px] text-on-surface-variant leading-relaxed lg:min-h-[4.5rem]">
+                        Mayor distancia entre ejes y un ángulo de dirección de <span class="text-secondary font-bold">68.5°</span> que te brindan total seguridad y estabilidad en bajadas difíciles.
                     </p>
                 </div>
             </div>
 
             <!-- Pillar 2: Absorción Orgánica & Monocasco de Carbono -->
-            <div class="relative group overflow-hidden rounded-2xl p-8 bg-white/[0.02] backdrop-blur-xl border border-white/10 flex flex-col justify-between min-h-[380px] transition-all duration-500 hover:border-secondary/30 hover:shadow-[0_12px_40px_rgba(254,107,0,0.08)] reveal-on-scroll">
+            <div class="relative group overflow-hidden rounded-2xl p-6 lg:p-5 bg-white/[0.02] backdrop-blur-xl border border-white/10 flex flex-col justify-between min-h-[340px] lg:min-h-[290px] transition-all duration-500 hover:border-secondary/30 hover:shadow-[0_12px_40px_rgba(254,107,0,0.08)] reveal-on-scroll reveal-up reveal-delay-150">
                 <div>
                     <!-- SVG Illustration (Carbon UD Dampening Grid) -->
-                    <div class="w-full h-40 flex items-center justify-center mb-6 overflow-hidden rounded-xl bg-black/20 border border-white/5 relative">
+                    <div class="w-full h-32 lg:h-28 flex items-center justify-center mb-4 lg:mb-3 overflow-hidden rounded-xl bg-black/20 border border-white/5 relative">
                         <svg class="w-full h-full p-4 text-white/20 transition-transform duration-700 ease-out group-hover:scale-105" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <!-- Layered carbon fibers -->
                             <line x1="20" y1="20" x2="180" y2="20" stroke="currentColor" stroke-width="0.5" />
@@ -852,28 +866,27 @@
                     </div>
                     
                     <!-- Card Header -->
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-secondary group-hover:bg-secondary/10 group-hover:border-secondary/20 transition-all duration-300">
-                            <span class="material-symbols-outlined text-[20px]">waves</span>
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-secondary group-hover:bg-secondary/10 group-hover:border-secondary/20 transition-all duration-300">
+                            <span class="material-symbols-outlined text-[18px]">waves</span>
                         </div>
-                        <h3 class="font-headline-md text-[20px] text-white uppercase font-bold tracking-wide">Absorción Orgánica</h3>
+                        <h3 class="font-headline-md text-[18px] text-white uppercase font-bold tracking-wide">Cuadro de Carbono</h3>
                     </div>
                 </div>
 
                 <!-- Solution Description -->
                 <div class="mt-auto">
-                    <h4 class="font-label-mono text-[11px] text-white tracking-widest uppercase mb-1">MONOCASCO DE CARBONO UD</h4>
-                    <p class="font-body-lg text-[15px] md:text-[16px] text-on-surface-variant leading-relaxed">
-                        Carbono unidireccional de alta resistencia en zonas críticas para lograr un chasis ultraligero y blindado de solo <span class="text-secondary font-bold">890g</span>.
+                    <p class="font-body-lg text-[13px] md:text-[14px] text-on-surface-variant leading-relaxed lg:min-h-[4.5rem]">
+                        Construcción en carbono monocasco de alta resistencia que absorbe vibraciones, logrando un cuadro ultra ligero de solo <span class="text-secondary font-bold">890g</span>.
                     </p>
                 </div>
             </div>
 
             <!-- Pillar 3: Eficiencia de Pedaleo & Caja Pedalera (Subidas) -->
-            <div class="relative group overflow-hidden rounded-2xl p-8 bg-white/[0.02] backdrop-blur-xl border border-white/10 flex flex-col justify-between min-h-[380px] transition-all duration-500 hover:border-secondary/30 hover:shadow-[0_12px_40px_rgba(254,107,0,0.08)] reveal-on-scroll">
+            <div class="relative group overflow-hidden rounded-2xl p-6 lg:p-5 bg-white/[0.02] backdrop-blur-xl border border-white/10 flex flex-col justify-between min-h-[340px] lg:min-h-[290px] transition-all duration-500 hover:border-secondary/30 hover:shadow-[0_12px_40px_rgba(254,107,0,0.08)] reveal-on-scroll reveal-up reveal-delay-300">
                 <div>
                     <!-- SVG Illustration (Pedalier Power Vector) -->
-                    <div class="w-full h-40 flex items-center justify-center mb-6 overflow-hidden rounded-xl bg-black/20 border border-white/5 relative">
+                    <div class="w-full h-32 lg:h-28 flex items-center justify-center mb-4 lg:mb-3 overflow-hidden rounded-xl bg-black/20 border border-white/5 relative">
                         <svg class="w-full h-full p-4 text-white/20 transition-transform duration-700 ease-out group-hover:scale-105" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <!-- Outer circle -->
                             <circle cx="100" cy="50" r="35" stroke="currentColor" stroke-dasharray="2 2" stroke-width="0.5" opacity="0.5" />
@@ -892,19 +905,18 @@
                     </div>
                     
                     <!-- Card Header -->
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-secondary group-hover:bg-secondary/10 group-hover:border-secondary/20 transition-all duration-300">
-                            <span class="material-symbols-outlined text-[20px]">speed</span>
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-secondary group-hover:bg-secondary/10 group-hover:border-secondary/20 transition-all duration-300">
+                            <span class="material-symbols-outlined text-[18px]">speed</span>
                         </div>
-                        <h3 class="font-headline-md text-[20px] text-white uppercase font-bold tracking-wide">Eficiencia de Pedaleo</h3>
+                        <h3 class="font-headline-md text-[18px] text-white uppercase font-bold tracking-wide">Fuerza de Pedaleo</h3>
                     </div>
                 </div>
 
                 <!-- Solution Description -->
                 <div class="mt-auto">
-                    <h4 class="font-label-mono text-[11px] text-white tracking-widest uppercase mb-1">CAJA PEDALERA SOBREDIMENSIONADA</h4>
-                    <p class="font-body-lg text-[15px] md:text-[16px] text-on-surface-variant leading-relaxed">
-                        Refuerzo de rigidez en nodos clave que transfiere el 100% de tu potencia directamente a la rueda trasera, eliminando toda flexión.
+                    <p class="font-body-lg text-[13px] md:text-[14px] text-on-surface-variant leading-relaxed lg:min-h-[4.5rem]">
+                        Caja de pedalier rígida y vainas traseras optimizadas que transfieren toda tu potencia directamente al terreno en cada pedaleo.
                     </p>
                 </div>
             </div>
@@ -912,20 +924,18 @@
     </div>
 </section>
 
-<!-- Módulo 4 (Ingeniería Desfragmentada) -->
-<section id="specs-interactive" class="relative bg-surface flex flex-col justify-center py-24 md:py-36 px-edge-margin overflow-hidden">
-    <div class="max-w-[90rem] mx-auto w-full lg:aspect-[16/9] lg:max-h-[70vh] flex flex-col justify-center relative">
-        <!-- Encabezado del Módulo -->
-        <div class="relative z-20 w-full text-center mt-0 mb-6 reveal-on-scroll">
-            <h2 class="font-display-lg text-[32px] md:text-[56px] text-white tracking-tighter uppercase font-bold mb-2">INGENIERÍA DESFRAGMENTADA</h2>
-            <p class="font-body-lg text-[16px] md:text-[18px] text-white/70 max-w-xl mx-auto leading-relaxed">
-                Componentes de precisión para el máximo rendimiento.
-            </p>
+<!-- Módulo 4 (Componentes Al Detalle) -->
+<section id="specs-interactive" class="relative bg-[#1b110e] lg:h-screen flex flex-col justify-center py-12 lg:py-0 lg:pt-20 lg:pb-8 overflow-hidden">
+    <div class="w-full flex flex-col items-center">
+
+        <!-- Section Header -->
+        <div class="w-full text-center mb-4 px-edge-margin reveal-on-scroll reveal-up">
+            <h2 class="font-display-lg text-[32px] md:text-[48px] text-white tracking-normal uppercase font-bold mb-2">COMPONENTES AL DETALLE</h2>
         </div>
 
         <!-- Contenedor de la Bicicleta Centrado y a Escala -->
-        <div class="relative w-full lg:h-[82%] aspect-[16/9] mx-auto flex items-center justify-center z-10 reveal-on-scroll">
-            <div class="relative w-full h-full flex items-center justify-center scale-100 md:scale-130 lg:scale-[1.42]">
+        <div class="relative w-full lg:h-[58vh] lg:w-auto aspect-[16/9] mx-auto mt-6 flex items-center justify-center z-10 reveal-on-scroll">
+            <div class="relative w-full h-full flex items-center justify-center scale-[0.75] md:scale-[0.95] lg:scale-[1.2]">
                 
                 <!-- Imagen principal de la bicicleta -->
                 <img src="assets/bici_exploded_temp.png" alt="Venzo Amphion componentes" class="absolute inset-0 w-full h-full object-contain pointer-events-none select-none z-0" />
@@ -1078,22 +1088,22 @@
 </div>
 </section>
 <!-- Módulo 5 (Ingeniería de Precisión) -->
-<section class="bg-white md:h-screen flex flex-col justify-center py-24 md:py-36 overflow-hidden text-[#1e1411]" id="components">
-<div class="max-w-[90rem] mx-auto w-full px-edge-margin flex flex-col justify-center items-center">
-    <div class="text-center mb-6 md:mb-8 reveal-on-scroll shrink-0 w-full">
-        <h2 class="font-display-lg text-[32px] md:text-[56px] text-[#1e1411] tracking-tighter uppercase font-bold mb-1 leading-tight">TECNOLOGÍA DE PUNTA</h2>
+<section class="bg-white lg:h-screen flex flex-col justify-center py-12 lg:py-0 lg:pt-20 lg:pb-8 px-edge-margin overflow-hidden text-[#1e1411]" id="components">
+<div class="max-w-[90rem] mx-auto w-full flex flex-col justify-center items-center">
+    <div class="text-center mb-6 md:mb-8 reveal-on-scroll reveal-up shrink-0 w-full">
+        <h2 class="font-display-lg text-[32px] md:text-[56px] text-[#1e1411] tracking-normal uppercase font-bold mb-1 leading-tight">DISEÑO DE VANGUARDIA</h2>
         <p class="font-body-lg text-[16px] md:text-[18px] text-[#1e1411]/80 max-w-2xl mt-4 leading-relaxed mx-auto">
-            Cada elemento de la Amphion responde a un estándar de precisión absoluta, integrando componentes de última generación que redefinen la conexión entre el ciclista y el terreno.
+            La ingeniería avanzada detrás de la Amphion asegura que toda la estructura trabaje en perfecta armonía, brindándote una respuesta inmediata y una conexión directa con el camino.
         </p>
     </div>
-    <div class="relative w-full h-[45vh] md:h-[48vh] flex items-center justify-center gap-6 reveal-on-scroll">
+    <div class="relative w-full h-[45vh] lg:h-[50vh] lg:max-h-[460px] flex items-center justify-center gap-6 reveal-on-scroll reveal-scale">
     <div class="carousel-item active h-full rounded-2xl overflow-hidden relative shadow-2xl" onclick="activateSlide(this)">
         <img class="w-full h-full object-cover" src="assets/cockpit.png"/>
         <div class="absolute inset-0 bg-black/15 transition-all duration-500 pointer-events-none"></div>
         <div class="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none transition-all duration-500 z-10"></div>
         <div class="absolute bottom-0 left-0 w-full p-4 xs:p-6 md:p-8 text-white text-center transition-all duration-500 carousel-text-box z-20">
-            <h3 class="font-headline-md text-[18px] xs:text-[22px] md:text-[28px] mb-2 uppercase text-white font-bold tracking-wide">COCKPIT</h3>
-            <p class="font-body-lg text-[13px] xs:text-[15px] md:text-[18px] text-white font-medium leading-relaxed max-w-lg mx-auto">Manubrio integrado de carbono UD para una rigidez máxima y guiado interno de cables.</p>
+            <h3 class="font-headline-md text-[18px] xs:text-[22px] md:text-[28px] mb-2 uppercase text-white font-bold tracking-wide">MANUBRIO</h3>
+            <p class="font-body-lg text-[13px] xs:text-[15px] md:text-[18px] text-white font-medium leading-relaxed max-w-lg mx-auto">Manubrio de carbono en una sola pieza para máxima firmeza y cables totalmente ocultos.</p>
         </div>
     </div>
     <div class="carousel-item inactive h-full rounded-2xl overflow-hidden relative" onclick="activateSlide(this)">
@@ -1101,8 +1111,8 @@
         <div class="absolute inset-0 bg-black/25 transition-all duration-500 pointer-events-none"></div>
         <div class="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none transition-all duration-500 z-10"></div>
         <div class="absolute bottom-0 left-0 w-full p-4 xs:p-6 md:p-8 text-white text-center transition-all duration-500 carousel-text-box z-20" style="opacity: 0">
-            <h3 class="font-headline-md text-[18px] xs:text-[22px] md:text-[28px] mb-2 uppercase text-white font-bold tracking-wide">DRIVETRAIN</h3>
-            <p class="font-body-lg text-[13px] xs:text-[15px] md:text-[18px] text-white font-medium leading-relaxed max-w-lg mx-auto">Transmisión electrónica inalámbrica para cambios perfectos bajo carga.</p>
+            <h3 class="font-headline-md text-[18px] xs:text-[22px] md:text-[28px] mb-2 uppercase text-white font-bold tracking-wide">TRANSMISIÓN</h3>
+            <p class="font-body-lg text-[13px] xs:text-[15px] md:text-[18px] text-white font-medium leading-relaxed max-w-lg mx-auto">Cambios electrónicos inalámbricos para cambiar de marcha de forma rápida y precisa.</p>
         </div>
     </div>
     <div class="carousel-item inactive h-full rounded-2xl overflow-hidden relative" onclick="activateSlide(this)">
@@ -1110,52 +1120,106 @@
         <div class="absolute inset-0 bg-black/25 transition-all duration-500 pointer-events-none"></div>
         <div class="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none transition-all duration-500 z-10"></div>
         <div class="absolute bottom-0 left-0 w-full p-4 xs:p-6 md:p-8 text-white text-center transition-all duration-500 carousel-text-box z-20" style="opacity: 0">
-            <h3 class="font-headline-md text-[18px] xs:text-[22px] md:text-[28px] mb-2 uppercase text-white font-bold tracking-wide">SUSPENSIÓN</h3>
-            <p class="font-body-lg text-[13px] xs:text-[15px] md:text-[18px] text-white font-medium leading-relaxed max-w-lg mx-auto">Horquilla delantera con amortiguación optimizada y bloqueo remoto electrónico.</p>
+            <h3 class="font-headline-md text-[18px] xs:text-[22px] md:text-[28px] mb-2 uppercase text-white font-bold tracking-wide">AMORTIGUACIÓN</h3>
+            <p class="font-body-lg text-[13px] xs:text-[15px] md:text-[18px] text-white font-medium leading-relaxed max-w-lg mx-auto">Horquilla delantera con suspensión de aire y bloqueo directo desde el manubrio.</p>
         </div>
     </div>
     </div>
 
     <!-- Dots indicators -->
     <div class="flex justify-center gap-3 mt-6 reveal-on-scroll shrink-0">
-        <button class="carousel-dot w-2.5 h-2.5 rounded-full bg-[#1e1411]/20 hover:bg-secondary-container transition-all duration-300 cursor-pointer" onclick="activateSlideByIndex(0)" aria-label="Slide 1"></button>
-        <button class="carousel-dot w-2.5 h-2.5 rounded-full bg-secondary-container hover:bg-secondary-container transition-all duration-300 cursor-pointer" onclick="activateSlideByIndex(1)" aria-label="Slide 2"></button>
+        <button class="carousel-dot w-2.5 h-2.5 rounded-full bg-secondary-container hover:bg-secondary-container transition-all duration-300 cursor-pointer" onclick="activateSlideByIndex(0)" aria-label="Slide 1"></button>
+        <button class="carousel-dot w-2.5 h-2.5 rounded-full bg-[#1e1411]/20 hover:bg-secondary-container transition-all duration-300 cursor-pointer" onclick="activateSlideByIndex(1)" aria-label="Slide 2"></button>
         <button class="carousel-dot w-2.5 h-2.5 rounded-full bg-[#1e1411]/20 hover:bg-secondary-container transition-all duration-300 cursor-pointer" onclick="activateSlideByIndex(2)" aria-label="Slide 3"></button>
     </div>
 </div>
 </section>
 <!-- Módulo 5.5 (Customización) -->
-<section id="customizer" class="relative min-h-screen flex flex-col justify-center py-24 md:py-36 px-edge-margin overflow-hidden bg-[#1b110e]">
-    <!-- Background Stack for smooth, flicker-free transitions -->
-    <div class="absolute inset-0 z-0">
-        <img id="custom-bg-0" class="customizer-bg absolute inset-0 w-full h-full object-cover object-center opacity-100 z-10 transition-opacity duration-500 ease-in-out select-none" src="assets/aspecto1.png" alt="Fondo Gris Cromo"/>
-        <img id="custom-bg-1" class="customizer-bg absolute inset-0 w-full h-full object-cover object-center opacity-0 z-0 transition-opacity duration-500 ease-in-out select-none" src="assets/aspecto2.png" alt="Fondo Rosa Neo"/>
-        <img id="custom-bg-2" class="customizer-bg absolute inset-0 w-full h-full object-cover object-center opacity-0 z-0 transition-opacity duration-500 ease-in-out select-none" src="assets/aspecto3.png" alt="Fondo Verde Eléctrico"/>
-    </div>
-    
-    <!-- Gradient overlay from the left to improve text legibility -->
-    <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent pointer-events-none z-10"></div>
-    
-    <div class="max-w-[90rem] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+<section id="customizer" class="relative overflow-hidden bg-[#1b110e] lg:h-screen lg:flex lg:flex-col lg:justify-center py-12 lg:py-0 lg:pt-20 lg:pb-8 px-edge-margin">
 
-        <!-- Contenedor Izquierdo: Textos e interactividad -->
-        <div class="lg:col-span-5 flex flex-col justify-center reveal-on-scroll order-2 lg:order-1 relative z-20">
-            <h2 class="font-display-lg text-[32px] md:text-[56px] text-white tracking-tighter uppercase font-bold mb-4 leading-none">ASPECTOS</h2>
+    <!-- Mobile Title Block (hidden on desktop) -->
+    <div class="lg:hidden text-center w-full relative z-20 mb-4" style="padding-top: 90px;">
+        <h2 class="font-display-lg text-[28px] text-white tracking-normal uppercase font-bold mb-1.5">ASPECTOS</h2>
+        <p class="font-body-lg text-[13px] text-white/50 max-w-xs mx-auto leading-relaxed">
+            Personaliza el color de tu cuadro y define tu propio estilo en el terreno.
+        </p>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         VISUAL AREA — bike display inside rounded card
+         ═══════════════════════════════════════════════ -->
+    <div class="lg:hidden w-full">
+        <div id="customizer-visual-area">
+            <!-- Background Stack: smooth, flicker-free transitions -->
+            <div class="customizer-bgs absolute inset-0 z-0">
+                <img id="custom-bg-0" class="customizer-bg absolute inset-0 w-full h-full opacity-100 z-10 transition-opacity duration-300 ease-in-out select-none" src="assets/aspectomob1.png" alt="Fondo Gris Cromo"/>
+                <img id="custom-bg-1" class="customizer-bg absolute inset-0 w-full h-full opacity-0 z-10 transition-opacity duration-300 ease-in-out select-none" src="assets/aspectomob2.png" alt="Fondo Rosa Neo"/>
+                <img id="custom-bg-2" class="customizer-bg absolute inset-0 w-full h-full opacity-0 z-10 transition-opacity duration-300 ease-in-out select-none" src="assets/aspectomob3.png" alt="Fondo Verde Eléctrico"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Color Info Label (hidden on desktop) -->
+    <div class="lg:hidden text-center mb-5 z-20 relative">
+        <span id="customizer-active-name" class="font-headline-md text-[14px] font-bold text-white tracking-widest uppercase block mb-0.5">GRIS CROMO</span>
+        <span id="customizer-active-desc" class="font-label-mono text-[10px] text-white/40 tracking-wider block">CHROME GREY / ED. ESP.</span>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         DESKTOP BACKGROUND (hidden on mobile, handled above)
+         ═══════════════════════════════════════════════ -->
+    <div class="hidden lg:block absolute inset-0 z-0">
+        <img id="custom-bg-desk-0" class="customizer-bg absolute inset-0 w-full h-full object-cover object-center opacity-100 z-10 transition-opacity duration-300 ease-in-out select-none" src="assets/aspecto1.png" alt="Fondo Gris Cromo"/>
+        <img id="custom-bg-desk-1" class="customizer-bg absolute inset-0 w-full h-full object-cover object-center opacity-0 z-10 transition-opacity duration-300 ease-in-out select-none" src="assets/aspecto2.png" alt="Fondo Rosa Neo"/>
+        <img id="custom-bg-desk-2" class="customizer-bg absolute inset-0 w-full h-full object-cover object-center opacity-0 z-10 transition-opacity duration-300 ease-in-out select-none" src="assets/aspecto3.png" alt="Fondo Verde Eléctrico"/>
+    </div>
+
+    <!-- Desktop gradient overlay for text legibility -->
+    <div class="hidden lg:block absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent pointer-events-none z-10"></div>
+
+    <!-- ═══════════════════════════════════════════════
+         INTERACTION PANEL — color swatches (Mobile: below bike, horizontal circles)
+         ═══════════════════════════════════════════════ -->
+    <div id="customizer-interaction-panel" class="lg:hidden relative z-20">
+        <!-- Minimalist color swatches row -->
+        <div class="flex items-center justify-center gap-5">
+            <!-- Gris Cromo Swatch -->
+            <button class="customizer-swatch-circle active w-12 h-12 rounded-full bg-gradient-to-br from-[#8A8D8F] to-[#1A1A1A] border-2 border-white/10 p-0.5 transition-all duration-300 relative focus:outline-none cursor-pointer" onclick="selectColor(0)" aria-label="Gris Cromo">
+            </button>
+
+            <!-- Rosa Neo Swatch -->
+            <button class="customizer-swatch-circle w-12 h-12 rounded-full bg-gradient-to-br from-[#ff007f] to-[#1A1A1A] border-2 border-white/10 p-0.5 transition-all duration-300 relative focus:outline-none cursor-pointer" onclick="selectColor(1)" aria-label="Rosa Neo">
+            </button>
+
+            <!-- Verde Eléctrico Swatch -->
+            <button class="customizer-swatch-circle w-12 h-12 rounded-full bg-gradient-to-br from-[#39ff14] to-[#1A1A1A] border-2 border-white/10 p-0.5 transition-all duration-300 relative focus:outline-none cursor-pointer" onclick="selectColor(2)" aria-label="Verde Eléctrico">
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         DESKTOP LAYOUT (hidden on mobile)
+         ═══════════════════════════════════════════════ -->
+    <div class="hidden lg:grid max-w-[90rem] mx-auto w-full lg:grid-cols-12 gap-8 items-center relative z-10 lg:h-[80vh]">
+
+        <!-- Left Column: Texts & swatches -->
+        <div class="lg:col-span-5 flex flex-col justify-center reveal-on-scroll reveal-left relative z-20">
+            <h2 class="font-display-lg text-[56px] text-white tracking-normal uppercase font-bold mb-4 leading-none">ASPECTOS</h2>
             
-            <p class="font-body-lg text-[16px] md:text-[18px] text-white mb-8 leading-relaxed max-w-md">
+            <p class="font-body-lg text-[18px] text-white mb-8 leading-relaxed max-w-md">
                 Cada color expresa una identidad.<br/>
                 Elige el que mejor va con tu estilo<br/>
                 y lleva tu Amphion al siguiente nivel.
             </p>
             
             <!-- Swatches (Wide premium cards) -->
-            <div class="flex flex-col gap-4 max-w-lg w-full mb-8">
+            <div class="flex flex-col gap-4 max-w-lg w-full">
                 <!-- Color 1 -->
                 <div class="customizer-swatch active group relative bg-neutral-900/60 border border-secondary shadow-md transition-all duration-300 rounded-2xl p-5 flex items-center justify-between gap-6 cursor-pointer select-none" onclick="selectColor(0)">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#8A8D8F] to-[#1A1A1A] border border-white/10 flex items-center justify-center shrink-0"></div>
                         <div class="flex flex-col">
-                            <span class="font-headline-md text-[16px] md:text-[18px] font-bold text-white tracking-wide uppercase">GRIS CROMO</span>
+                            <span class="font-headline-md text-[18px] font-bold text-white tracking-wide uppercase">GRIS CROMO</span>
                             <span class="font-label-mono text-[11px] text-white/50">CHROME GREY / ED. ESP.</span>
                         </div>
                     </div>
@@ -1167,7 +1231,7 @@
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ff007f] to-[#1A1A1A] border border-white/10 flex items-center justify-center shrink-0"></div>
                         <div class="flex flex-col">
-                            <span class="font-headline-md text-[16px] md:text-[18px] font-bold text-white tracking-wide uppercase">ROSA NEO</span>
+                            <span class="font-headline-md text-[18px] font-bold text-white tracking-wide uppercase">ROSA NEO</span>
                             <span class="font-label-mono text-[11px] text-white/50">NEON PINK / DESTELLANTE</span>
                         </div>
                     </div>
@@ -1179,41 +1243,25 @@
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#39ff14] to-[#1A1A1A] border border-white/10 flex items-center justify-center shrink-0"></div>
                         <div class="flex flex-col">
-                            <span class="font-headline-md text-[16px] md:text-[18px] font-bold text-white tracking-wide uppercase">VERDE ELÉCTRICO</span>
+                            <span class="font-headline-md text-[18px] font-bold text-white tracking-wide uppercase">VERDE ELÉCTRICO</span>
                             <span class="font-label-mono text-[11px] text-white/50">ELECTRIC LIME / RACING</span>
                         </div>
                     </div>
                     <span class="material-symbols-outlined text-white/40 group-hover:text-secondary transition-colors text-[22px]">arrow_forward</span>
                 </div>
             </div>
-
-            <!-- Technical details metadata box -->
-            <div class="pt-6 border-t border-white/10 max-w-lg w-full">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-full border border-white/25 flex items-center justify-center text-white/90 shrink-0">
-                        <span class="material-symbols-outlined text-[24px]">diamond</span>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="font-label-mono text-[10px] text-secondary tracking-widest uppercase block mb-1">ACABADO DEL CUADRO</span>
-                        <span id="custom-meta-finish" class="font-headline-md text-[18px] md:text-[20px] font-bold text-white tracking-wider uppercase mb-1">BRILLANTE ANODIZADO</span>
-                        <p id="custom-meta-desc" class="font-body-lg text-[13px] md:text-[14px] text-white/80 leading-relaxed max-w-sm">
-                            Tratamiento premium que maximiza la resistencia a la corrosión y realza el brillo del color.
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <!-- Contenedor Derecho: Espacio reservado para ver la bicicleta en el fondo -->
-        <div class="lg:col-span-7 relative w-full aspect-[16/9] lg:h-[550px] pointer-events-none select-none order-1 lg:order-2"></div>
+        <!-- Right Column: Reserved space to show bike in background -->
+        <div class="lg:col-span-7 relative w-full lg:h-[550px] pointer-events-none select-none"></div>
         
     </div>
 </section>
 <!-- Módulo 6 (Opiniones) -->
-<section id="reviews" class="relative bg-surface flex flex-col justify-center py-24 md:py-36 px-edge-margin overflow-hidden bg-[#1b110e]">
+<section id="reviews" class="relative bg-surface lg:h-screen lg:flex lg:flex-col lg:justify-center py-12 lg:py-0 lg:pt-20 lg:pb-8 px-edge-margin overflow-hidden bg-[#1b110e]">
     <!-- Title and Subtitle -->
-    <div class="relative z-10 max-w-[90rem] mx-auto w-full flex flex-col justify-center items-center reveal-on-scroll text-center mb-16 md:mb-24">
-        <h2 class="font-display-lg text-[32px] md:text-[56px] text-white tracking-tighter uppercase font-bold mb-2">OPINIONES</h2>
+    <div class="relative z-10 max-w-[90rem] mx-auto w-full flex flex-col justify-center items-center reveal-on-scroll reveal-up text-center mb-8 lg:mb-12">
+        <h2 class="font-display-lg text-[32px] md:text-[56px] text-white tracking-normal uppercase font-bold mb-2">OPINIONES</h2>
         <p class="font-body-lg text-[16px] md:text-[18px] text-white/70 max-w-xl mx-auto leading-relaxed">
             La voz de quienes ya desafían los límites del trail.
         </p>
@@ -1222,7 +1270,7 @@
     <!-- Review Cards Grid -->
     <div class="relative z-10 max-w-[90rem] mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Review 1 -->
-        <div class="relative group overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/10 shadow-[0_12px_32px_rgba(27,17,14,0.3)] hover:border-secondary/30 transition-all duration-300 flex flex-col justify-between reveal-on-scroll min-h-[320px]">
+        <div class="relative group overflow-hidden rounded-2xl p-6 lg:p-5 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/10 shadow-[0_12px_32px_rgba(27,17,14,0.3)] hover:border-secondary/30 transition-all duration-300 flex flex-col justify-between reveal-on-scroll reveal-up min-h-[320px] lg:min-h-[260px]">
             <div>
                 <div class="flex items-center gap-1 mb-4 text-[#fe6b00]">
                     <span class="material-symbols-outlined text-[18px]">star</span>
@@ -1241,13 +1289,13 @@
                 </div>
                 <div class="flex flex-col min-w-0">
                     <span class="font-headline-md text-[13px] md:text-[14px] font-bold text-white tracking-wide truncate">Matías Albarracín</span>
-                    <span class="font-label-mono text-[10px] text-white/50 truncate">Ciclista Amateur MTB / Córdoba</span>
+                    <span class="font-label-mono text-[10px] text-white/50 truncate hidden md:block">Ciclista Amateur MTB / Córdoba</span>
                 </div>
             </div>
         </div>
 
         <!-- Review 2 -->
-        <div class="relative group overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/10 shadow-[0_12px_32px_rgba(27,17,14,0.3)] hover:border-secondary/30 transition-all duration-300 flex flex-col justify-between reveal-on-scroll min-h-[320px]">
+        <div class="relative group overflow-hidden rounded-2xl p-6 lg:p-5 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/10 shadow-[0_12px_32px_rgba(27,17,14,0.3)] hover:border-secondary/30 transition-all duration-300 flex flex-col justify-between reveal-on-scroll reveal-up reveal-delay-150 min-h-[320px] lg:min-h-[260px]">
             <div>
                 <div class="flex items-center gap-1 mb-4 text-[#fe6b00]">
                     <span class="material-symbols-outlined text-[18px]">star</span>
@@ -1266,13 +1314,13 @@
                 </div>
                 <div class="flex flex-col min-w-0">
                     <span class="font-headline-md text-[13px] md:text-[14px] font-bold text-white tracking-wide truncate">Sofía Galliano</span>
-                    <span class="font-label-mono text-[10px] text-white/50 truncate">Competidora XC / Mendoza</span>
+                    <span class="font-label-mono text-[10px] text-white/50 truncate hidden md:block">Competidora XC / Mendoza</span>
                 </div>
             </div>
         </div>
 
         <!-- Review 3 -->
-        <div class="relative group overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/10 shadow-[0_12px_32px_rgba(27,17,14,0.3)] hover:border-secondary/30 transition-all duration-300 flex flex-col justify-between reveal-on-scroll min-h-[320px]">
+        <div class="relative group overflow-hidden rounded-2xl p-6 lg:p-5 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/10 shadow-[0_12px_32px_rgba(27,17,14,0.3)] hover:border-secondary/30 transition-all duration-300 flex flex-col justify-between reveal-on-scroll reveal-up reveal-delay-300 min-h-[320px] lg:min-h-[260px]">
             <div>
                 <div class="flex items-center gap-1 mb-4 text-[#fe6b00]">
                     <span class="material-symbols-outlined text-[18px]">star</span>
@@ -1291,13 +1339,13 @@
                 </div>
                 <div class="flex flex-col min-w-0">
                     <span class="font-headline-md text-[13px] md:text-[14px] font-bold text-white tracking-wide truncate">Esteban Rossi</span>
-                    <span class="font-label-mono text-[10px] text-white/50 truncate">Guía de MTB / Bariloche</span>
+                    <span class="font-label-mono text-[10px] text-white/50 truncate hidden md:block">Guía de MTB / Bariloche</span>
                 </div>
             </div>
         </div>
 
         <!-- Review 4 -->
-        <div class="relative group overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/10 shadow-[0_12px_32px_rgba(27,17,14,0.3)] hover:border-secondary/30 transition-all duration-300 flex flex-col justify-between reveal-on-scroll min-h-[320px]">
+        <div class="relative group overflow-hidden rounded-2xl p-6 lg:p-5 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/10 shadow-[0_12px_32px_rgba(27,17,14,0.3)] hover:border-secondary/30 transition-all duration-300 flex flex-col justify-between reveal-on-scroll reveal-up reveal-delay-450 min-h-[320px] lg:min-h-[260px]">
             <div>
                 <div class="flex items-center gap-1 mb-4 text-[#fe6b00]">
                     <span class="material-symbols-outlined text-[18px]">star</span>
@@ -1316,7 +1364,7 @@
                 </div>
                 <div class="flex flex-col min-w-0">
                     <span class="font-headline-md text-[13px] md:text-[14px] font-bold text-white tracking-wide truncate">Lucía Fernández</span>
-                    <span class="font-label-mono text-[10px] text-white/50 truncate">Entusiasta del Trail / Salta</span>
+                    <span class="font-label-mono text-[10px] text-white/50 truncate hidden md:block">Entusiasta del Trail / Salta</span>
                 </div>
             </div>
         </div>
@@ -1338,102 +1386,149 @@
         </div>
     </div>
 </footer>
+
 <script>
-    function activateSlide(clickedElement) {
-        const items = Array.from(document.querySelectorAll('.carousel-item'));
-        
-        if(clickedElement.classList.contains('active')) return;
-
-        const activeIndex = items.indexOf(clickedElement);
-
-        items.forEach(item => {
-            item.classList.remove('active', 'shadow-2xl');
-            item.classList.add('inactive');
-            const overlay = item.querySelector('.carousel-text-box');
-            if(overlay) overlay.style.opacity = '0';
-        });
-
-        clickedElement.classList.remove('inactive');
-        clickedElement.classList.add('active', 'shadow-2xl');
-        
-        const activeOverlay = clickedElement.querySelector('.carousel-text-box');
-        if(activeOverlay) activeOverlay.style.opacity = '1';
-
-        // Update dots indicators
-        const dots = document.querySelectorAll('.carousel-dot');
-        dots.forEach((dot, idx) => {
-            if(idx === activeIndex) {
-                dot.classList.remove('bg-[#1e1411]/20');
-                dot.classList.add('bg-secondary-container');
-            } else {
-                dot.classList.remove('bg-secondary-container');
-                dot.classList.add('bg-[#1e1411]/20');
+    // Color Customizer function
+    function selectColor(idx) {
+        const mobBgs = [
+            document.getElementById('custom-bg-0'),
+            document.getElementById('custom-bg-1'),
+            document.getElementById('custom-bg-2')
+        ];
+        mobBgs.forEach((bg, i) => {
+            if (bg) {
+                if (i === idx) {
+                    bg.classList.remove('opacity-0');
+                    bg.classList.add('opacity-100');
+                } else {
+                    bg.classList.remove('opacity-100');
+                    bg.classList.add('opacity-0');
+                }
             }
         });
-    }
 
-    function activateSlideByIndex(index) {
-        const items = document.querySelectorAll('.carousel-item');
-        if(items[index]) {
-            activateSlide(items[index]);
-        }
-    }
-
-    let currentColorIndex = 0;
-
-    function selectColor(index) {
-        currentColorIndex = index;
-        const swatches = document.querySelectorAll('.customizer-swatch');
-        const bgs = document.querySelectorAll('.customizer-bg');
-        const metaFinish = document.getElementById('custom-meta-finish');
-        const metaDesc = document.getElementById('custom-meta-desc');
-
-        const finishes = ['BRILLANTE ANODIZADO', 'MATE SATINADO', 'MATE RACING'];
-        const descriptions = [
-            'Tratamiento premium que maximiza la resistencia a la corrosión y realza el brillo del color.',
-            'Acabado mate de textura suave que absorbe reflejos y destaca las líneas agresivas del cuadro.',
-            'Capa ultra-delgada diseñada para competiciones que reduce peso y repele el barro.'
+        const deskBgs = [
+            document.getElementById('custom-bg-desk-0'),
+            document.getElementById('custom-bg-desk-1'),
+            document.getElementById('custom-bg-desk-2')
         ];
+        deskBgs.forEach((bg, i) => {
+            if (bg) {
+                if (i === idx) {
+                    bg.classList.remove('opacity-0');
+                    bg.classList.add('opacity-100');
+                } else {
+                    bg.classList.remove('opacity-100');
+                    bg.classList.add('opacity-0');
+                }
+            }
+        });
 
-        swatches.forEach((swatch, idx) => {
-            const arrow = swatch.querySelector('.material-symbols-outlined');
-            if (idx === index) {
-                swatch.classList.add('active', 'border-secondary', 'bg-[#1c120e]/90');
-                swatch.classList.remove('border-white/5', 'bg-neutral-900/60');
+        const colorNames = ["GRIS CROMO", "ROSA NEO", "VERDE ELÉCTRICO"];
+        const colorDescs = [
+            "CHROME GREY / ED. ESP.",
+            "NEON PINK / DESTELLANTE",
+            "ELECTRIC LIME / RACING"
+        ];
+        const activeName = document.getElementById('customizer-active-name');
+        const activeDesc = document.getElementById('customizer-active-desc');
+        if (activeName) activeName.textContent = colorNames[idx];
+        if (activeDesc) activeDesc.textContent = colorDescs[idx];
+
+        const mobSwatches = document.querySelectorAll('.customizer-swatch-circle');
+        mobSwatches.forEach((swatch, i) => {
+            if (i === idx) {
+                swatch.classList.add('active');
+            } else {
+                swatch.classList.remove('active');
+            }
+        });
+
+        const deskSwatches = document.querySelectorAll('.customizer-swatch');
+        deskSwatches.forEach((swatch, i) => {
+            if (i === idx) {
+                swatch.classList.add('active');
+                swatch.classList.remove('border-white/5');
+                swatch.classList.add('border-secondary', 'shadow-md');
+                const arrow = swatch.querySelector('.material-symbols-outlined');
                 if (arrow) {
                     arrow.classList.remove('text-white/40');
                     arrow.classList.add('text-secondary');
                 }
             } else {
-                swatch.classList.remove('active', 'border-secondary', 'bg-[#1c120e]/90');
-                swatch.classList.add('border-white/5', 'bg-neutral-900/60');
+                swatch.classList.remove('active');
+                swatch.classList.remove('border-secondary', 'shadow-md');
+                swatch.classList.add('border-white/5');
+                const arrow = swatch.querySelector('.material-symbols-outlined');
                 if (arrow) {
                     arrow.classList.remove('text-secondary');
                     arrow.classList.add('text-white/40');
                 }
             }
         });
+    }
 
-        bgs.forEach((bg, idx) => {
-            if (idx === index) {
-                bg.classList.remove('opacity-0', 'z-0');
-                bg.classList.add('opacity-100', 'z-10');
+    // Carousel slides and markers activation function
+    function activateSlide(targetItem, idx) {
+        const items = Array.from(document.querySelectorAll('#components .carousel-item'));
+        const markers = document.querySelectorAll('.carousel-dot');
+        
+        if (idx === undefined) {
+            idx = items.indexOf(targetItem);
+        }
+
+        items.forEach((item, i) => {
+            if (i === idx) {
+                item.classList.remove('inactive');
+                item.classList.add('active');
+                const overlay = item.querySelector('.carousel-text-box');
+                if (overlay) overlay.style.opacity = '1';
             } else {
-                bg.classList.remove('opacity-100', 'z-10');
-                bg.classList.add('opacity-0', 'z-0');
+                item.classList.remove('active');
+                item.classList.add('inactive');
+                const overlay = item.querySelector('.carousel-text-box');
+                if (overlay) overlay.style.opacity = '0';
             }
         });
 
-        if (metaFinish) {
-            metaFinish.textContent = finishes[index];
-        }
-        if (metaDesc) {
-            metaDesc.textContent = descriptions[index];
+        markers.forEach((marker, mIdx) => {
+            if (mIdx === idx) {
+                marker.classList.remove('bg-[#1e1411]/20');
+                marker.classList.add('bg-secondary-container');
+            } else {
+                marker.classList.remove('bg-secondary-container');
+                marker.classList.add('bg-[#1e1411]/20');
+            }
+
+            if (window.innerWidth >= 1024) {
+                targetItem.style.transition = 'none';
+                // Desktop: Keep all dots visible
+                marker.style.opacity = '1';
+                if (mIdx === idx) {
+                    marker.classList.add('hotspot-active');
+                } else {
+                    marker.classList.remove('hotspot-active');
+                }
+            } else {
+                // Mobile: Only active dot is visible, no side tooltip active classes
+                marker.style.opacity = mIdx === idx ? '1' : '0';
+                marker.classList.remove('hotspot-active');
+            }
+        });
+    }
+
+    function activateSlideByIndex(idx) {
+        const items = document.querySelectorAll('#components .carousel-item');
+        if (items[idx]) {
+            activateSlide(items[idx], idx);
         }
     }
+    // ────────────────────────────────────────────────────────────────────
+
 
 
     document.addEventListener('DOMContentLoaded', () => {
+
           // Mobile Menu Toggle
           const mobileMenuBtn = document.getElementById('mobile-menu-btn');
           const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
@@ -1465,6 +1560,79 @@
           mobileNavLinks.forEach(link => {
               link.addEventListener('click', closeMobileMenu);
           });
+
+          // Hotspots Interactive Click Behavior
+          const hotspots = document.querySelectorAll('.hotspot-item');
+          hotspots.forEach(hotspot => {
+              hotspot.style.pointerEvents = 'auto';
+              hotspot.style.cursor = 'pointer';
+              hotspot.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  const isActive = hotspot.classList.contains('hotspot-active');
+                  
+                  if (isActive) {
+                      hotspot.classList.remove('hotspot-active');
+                  } else {
+                      hotspots.forEach(h => {
+                          if (h !== hotspot) h.classList.remove('hotspot-active');
+                      });
+                      hotspot.classList.add('hotspot-active');
+                  }
+              });
+          });
+
+          // Close any open hotspot tooltip when clicking anywhere outside
+          document.addEventListener('click', () => {
+              hotspots.forEach(h => h.classList.remove('hotspot-active'));
+          });
+          // Swipe / drag support on components carousel
+          const componentsCarousel = document.querySelector('#components .relative.w-full');
+          if (componentsCarousel) {
+              let touchStartX = 0;
+              let mouseStartX = 0;
+              let isDragging  = false;
+              const SWIPE_THRESHOLD = 40;
+
+              // Touch events (mobile)
+              componentsCarousel.addEventListener('touchstart', e => {
+                  touchStartX = e.touches[0].clientX;
+              }, { passive: true });
+              componentsCarousel.addEventListener('touchend', e => {
+                  const delta = e.changedTouches[0].clientX - touchStartX;
+                  if (Math.abs(delta) > SWIPE_THRESHOLD) {
+                      const direction = delta < 0 ? 1 : -1;
+                      const items = Array.from(document.querySelectorAll('#components .carousel-item'));
+                      const activeItem = document.querySelector('#components .carousel-item.active');
+                      const activeIndex = items.indexOf(activeItem);
+                      if (activeIndex !== -1) {
+                          const targetIndex = (activeIndex + direction + items.length) % items.length;
+                          activateSlide(items[targetIndex], targetIndex);
+                      }
+                  }
+              }, { passive: true });
+
+              // Mouse drag events (desktop)
+              componentsCarousel.addEventListener('mousedown', e => {
+                  if (window.innerWidth >= 1024) return;
+                  mouseStartX = e.clientX;
+                  isDragging  = true;
+              });
+              window.addEventListener('mouseup', e => {
+                  if (!isDragging) return;
+                  isDragging = false;
+                  const delta = e.clientX - mouseStartX;
+                  if (Math.abs(delta) > SWIPE_THRESHOLD) {
+                      const direction = delta < 0 ? 1 : -1;
+                      const items = Array.from(document.querySelectorAll('#components .carousel-item'));
+                      const activeItem = document.querySelector('#components .carousel-item.active');
+                      const activeIndex = items.indexOf(activeItem);
+                      if (activeIndex !== -1) {
+                          const targetIndex = (activeIndex + direction + items.length) % items.length;
+                          activateSlide(items[targetIndex], targetIndex);
+                      }
+                  }
+              });
+          }
 
          // Set Hero Video Playback Speed
          const heroVideo = document.getElementById('hero-video');
@@ -1543,8 +1711,9 @@
                  if (targetId === '#') return;
                  const targetElement = document.querySelector(targetId);
                  if (targetElement) {
+                     const offsetValue = 0;
                      lenis.scrollTo(targetElement, {
-                         offset: 0,
+                         offset: offsetValue,
                          duration: 1.4,
                          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
                      });
@@ -1592,28 +1761,6 @@
 
          sections.forEach(section => activeObserver.observe(section));
 
-          // Hotspots Interactive Click Behavior
-          const hotspots = document.querySelectorAll('.hotspot-item');
-          hotspots.forEach(hotspot => {
-              hotspot.addEventListener('click', (e) => {
-                  e.stopPropagation();
-                  const isActive = hotspot.classList.contains('hotspot-active');
-                  
-                  if (isActive) {
-                      hotspot.classList.remove('hotspot-active');
-                  } else {
-                      hotspots.forEach(h => {
-                          if (h !== hotspot) h.classList.remove('hotspot-active');
-                      });
-                      hotspot.classList.add('hotspot-active');
-                  }
-              });
-          });
-
-          // Close any open hotspot tooltip when clicking anywhere outside
-          document.addEventListener('click', () => {
-              hotspots.forEach(h => h.classList.remove('hotspot-active'));
-          });
     });
 </script>
 </body></html>
