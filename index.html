@@ -394,8 +394,8 @@
 
         /* ---- 5. SPECS INTERACTIVOS (#specs-interactive) ---- */
         /* Prevent scale overflow on mobile */
-        #specs-interactive .scale-\\[0\\.75\\] {
-            transform: scale(0.75) !important;
+        #specs-interactive .scale-\\[1\\.05\\] {
+            transform: scale(1.05) !important;
         }
 
         /* ---- 6. MÓDULO 2 (Modalidades/Performance) Mobile layout ---- */
@@ -935,13 +935,19 @@
 
         <!-- Contenedor de la Bicicleta Centrado y a Escala -->
         <div class="relative w-full lg:h-[58vh] lg:w-auto aspect-[16/9] mx-auto mt-6 flex items-center justify-center z-10 reveal-on-scroll">
-            <div class="relative w-full h-full flex items-center justify-center scale-[0.75] md:scale-[0.95] lg:scale-[1.2]">
+            <div class="relative w-full h-full flex items-center justify-center scale-[1.05] md:scale-[0.95] lg:scale-[1.2]">
                 
                 <!-- Imagen principal de la bicicleta -->
                 <img src="assets/bici_exploded_temp.png" alt="Venzo Amphion componentes" class="absolute inset-0 w-full h-full object-contain pointer-events-none select-none z-0" />
                 
                 <!-- Contenedor de hotspots alineado con el aspect-square de la imagen contained -->
                 <div class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 aspect-square pointer-events-none">
+                    <!-- Single dynamic hotspot for mobile device carousel -->
+                    <div id="mobile-bike-hotspot" class="absolute lg:hidden w-[20px] h-[20px] -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out z-20 pointer-events-auto" style="top: 30%; left: 64%;">
+                        <div class="w-[20px] h-[20px] bg-secondary rounded-full animate-ping absolute opacity-60"></div>
+                        <div class="w-[10px] h-[10px] bg-secondary border border-white rounded-full absolute top-[5px] left-[5px] shadow-[0_0_8px_rgba(254,107,0,0.8)]"></div>
+                    </div>
+                    
                     <!-- 1. Cockpit (top: 30%, left: 64%) -->
                     <div class="absolute group/hotspot top-[30%] left-[64%] pointer-events-auto hotspot-item">
                         <div class="w-[20px] h-[20px] bg-secondary-container rounded-full animate-ping absolute opacity-50"></div>
@@ -1050,39 +1056,79 @@
         </div>
     </div>
     
-    <!-- Mobile Specifications Grid (visible only on mobile/tablet) -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 lg:hidden reveal-on-scroll text-left">
-        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-2">
-            <span class="font-label-mono text-[10px] text-secondary tracking-wider font-bold">01 / COCKPIT</span>
-            <p class="font-body-lg text-[13px] text-white uppercase font-bold leading-tight">COCKPIT INTEGRADO CARBONO UD</p>
+    <!-- Mobile Specifications Carousel (visible only on mobile/tablet) -->
+    <div class="lg:hidden w-full max-w-sm mx-auto mt-6 relative px-4">
+        <!-- Carousel Slider Window -->
+        <div id="mobile-specs-carousel" class="overflow-hidden relative w-full rounded-2xl">
+            <div id="mobile-specs-track" class="flex transition-transform duration-500 ease-out w-full">
+                <!-- Slide 1: Cockpit -->
+                <div class="w-full shrink-0 px-2 select-none">
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 backdrop-blur-xl flex flex-col gap-3 min-h-[140px] justify-center text-left">
+                        <h3 class="font-headline-md text-[16px] text-white font-bold tracking-wide uppercase leading-tight">COCKPIT INTEGRADO CARBONO UD</h3>
+                        <p class="font-body-lg text-[12px] text-white/70 leading-relaxed">Manubrio y avance integrados en fibra de carbono UD, diseñados para optimizar la aerodinámica y la rigidez de la dirección.</p>
+                    </div>
+                </div>
+                <!-- Slide 2: Cuadro -->
+                <div class="w-full shrink-0 px-2 select-none">
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 backdrop-blur-xl flex flex-col gap-3 min-h-[140px] justify-center text-left">
+                        <h3 class="font-headline-md text-[16px] text-white font-bold tracking-wide uppercase leading-tight">FIBRA DE CARBONO ORGÁNICA 890G</h3>
+                        <p class="font-body-lg text-[12px] text-white/70 leading-relaxed">Fibra de carbono de alto módulo con un peso de solo 890g, ofreciendo una rigidez torsional incomparable y absorción orgánica.</p>
+                    </div>
+                </div>
+                <!-- Slide 3: Suspensión -->
+                <div class="w-full shrink-0 px-2 select-none">
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 backdrop-blur-xl flex flex-col gap-3 min-h-[140px] justify-center text-left">
+                        <h3 class="font-headline-md text-[16px] text-white font-bold tracking-wide uppercase leading-tight">SUSPENSIÓN HORQUILLA AIRE 120MM</h3>
+                        <p class="font-body-lg text-[12px] text-white/70 leading-relaxed">Horquilla de aire ajustable con 120mm de recorrido, optimizada para absorber impactos y proporcionar control en terrenos técnicos.</p>
+                    </div>
+                </div>
+                <!-- Slide 4: Frenos -->
+                <div class="w-full shrink-0 px-2 select-none">
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 backdrop-blur-xl flex flex-col gap-3 min-h-[140px] justify-center text-left">
+                        <h3 class="font-headline-md text-[16px] text-white font-bold tracking-wide uppercase leading-tight">FRENOS HIDRÁULICOS SHIMANO</h3>
+                        <p class="font-body-lg text-[12px] text-white/70 leading-relaxed">Frenos de disco hidráulicos Shimano con rotores de alta disipación térmica, garantizando un frenado potente y modulable.</p>
+                    </div>
+                </div>
+                <!-- Slide 5: Transmisión -->
+                <div class="w-full shrink-0 px-2 select-none">
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 backdrop-blur-xl flex flex-col gap-3 min-h-[140px] justify-center text-left">
+                        <h3 class="font-headline-md text-[16px] text-white font-bold tracking-wide uppercase leading-tight">TRANSMISIÓN SHIMANO DEORE 12V</h3>
+                        <p class="font-body-lg text-[12px] text-white/70 leading-relaxed">Grupo de transmisión Shimano Deore de 12 velocidades, optimizado para una retención de cadena impecable y cambios precisos.</p>
+                    </div>
+                </div>
+                <!-- Slide 6: Sillín -->
+                <div class="w-full shrink-0 px-2 select-none">
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 backdrop-blur-xl flex flex-col gap-3 min-h-[140px] justify-center text-left">
+                        <h3 class="font-headline-md text-[16px] text-white font-bold tracking-wide uppercase leading-tight">SILLÍN ERGONÓMICO PRO TRAIL</h3>
+                        <p class="font-body-lg text-[12px] text-white/70 leading-relaxed">Sillín Pro Trail con canal prostático antipresión y rieles ligeros, garantizando comodidad y maniobrabilidad en descensos.</p>
+                    </div>
+                </div>
+                <!-- Slide 7: Cassette -->
+                <div class="w-full shrink-0 px-2 select-none">
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 backdrop-blur-xl flex flex-col gap-3 min-h-[140px] justify-center text-left">
+                        <h3 class="font-headline-md text-[16px] text-white font-bold tracking-wide uppercase leading-tight">CASSETTE ULTRA-LIGHT 12 VEL.</h3>
+                        <p class="font-body-lg text-[12px] text-white/70 leading-relaxed">Maza de acople rápido y cassette con relación optimizada para trepadas empinadas y máxima durabilidad.</p>
+                    </div>
+                </div>
+                <!-- Slide 8: Ruedas -->
+                <div class="w-full shrink-0 px-2 select-none">
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 backdrop-blur-xl flex flex-col gap-3 min-h-[140px] justify-center text-left">
+                        <h3 class="font-headline-md text-[16px] text-white font-bold tracking-wide uppercase leading-tight">RUEDAS Y NEUMÁTICOS TUBELESS</h3>
+                        <p class="font-body-lg text-[12px] text-white/70 leading-relaxed">Llantas de aluminio de doble pared listas para tubeless, calzadas con neumáticos de alta tracción y protección antipinchazos.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-2">
-            <span class="font-label-mono text-[10px] text-secondary tracking-wider font-bold">02 / CUADRO</span>
-            <p class="font-body-lg text-[13px] text-white uppercase font-bold leading-tight">FIBRA DE CARBONO ORGÁNICA 890G</p>
-        </div>
-        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-2">
-            <span class="font-label-mono text-[10px] text-secondary tracking-wider font-bold">03 / SUSPENSIÓN</span>
-            <p class="font-body-lg text-[13px] text-white uppercase font-bold leading-tight">SUSPENSIÓN AIRE CONTROL REMOTO</p>
-        </div>
-        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-2">
-            <span class="font-label-mono text-[10px] text-secondary tracking-wider font-bold">04 / FRENOS</span>
-            <p class="font-body-lg text-[13px] text-white uppercase font-bold leading-tight">FRENOS HIDRÁULICOS SHIMANO</p>
-        </div>
-        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-2">
-            <span class="font-label-mono text-[10px] text-secondary tracking-wider font-bold">05 / MOTOR</span>
-            <p class="font-body-lg text-[13px] text-white uppercase font-bold leading-tight">TRANSMISIÓN SHIMANO ELECTRONIC</p>
-        </div>
-        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-2">
-            <span class="font-label-mono text-[10px] text-secondary tracking-wider font-bold">06 / SILLÍN</span>
-            <p class="font-body-lg text-[13px] text-white uppercase font-bold leading-tight">SILLÍN ERGONÓMICO PRO TRAIL</p>
-        </div>
-        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-2">
-            <span class="font-label-mono text-[10px] text-secondary tracking-wider font-bold">07 / TRANSMISIÓN</span>
-            <p class="font-body-lg text-[13px] text-white uppercase font-bold leading-tight">CASSETTE ULTRA-LIGHT 12 VEL.</p>
-        </div>
-        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-2">
-            <span class="font-label-mono text-[10px] text-secondary tracking-wider font-bold">08 / RUEDAS</span>
-            <p class="font-body-lg text-[13px] text-white uppercase font-bold leading-tight">NEUMÁTICOS TUBELESS COMPETICIÓN</p>
+        <!-- Dots -->
+        <div id="mobile-specs-dots" class="flex justify-center gap-1.5 mt-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300"></span>
         </div>
     </div>
 </div>
@@ -1761,6 +1807,82 @@
 
          sections.forEach(section => activeObserver.observe(section));
 
-    });
+          // Mobile specs interactive carousel
+          let currentSpecsSlideIdx = 0;
+          const specsSlidesCount = 8;
+          const specsTrack = document.getElementById('mobile-specs-track');
+          const specsDots = document.querySelectorAll('#mobile-specs-dots > span');
+          
+          const mobileHotspotCoords = [
+              { top: '30%', left: '64%' }, // Cockpit
+              { top: '39%', left: '49%' }, // Cuadro
+              { top: '47%', left: '70%' }, // Suspensión
+              { top: '57%', left: '73%' }, // Frenos
+              { top: '62%', left: '44%' }, // Transmisión
+              { top: '29%', left: '34%' }, // Sillín
+              { top: '58%', left: '23.5%' }, // Cassette
+              { top: '65%', left: '82%' }  // Ruedas
+          ];
+
+          function updateSpecsSlide(idx) {
+              if (idx < 0) idx = specsSlidesCount - 1;
+              if (idx >= specsSlidesCount) idx = 0;
+              currentSpecsSlideIdx = idx;
+
+              if (specsTrack) {
+                  specsTrack.style.transform = `translateX(-${currentSpecsSlideIdx * 100}%)`;
+              }
+
+              specsDots.forEach((dot, i) => {
+                  if (i === currentSpecsSlideIdx) {
+                      dot.classList.add('bg-secondary', 'w-3');
+                      dot.classList.remove('bg-white/20', 'w-1.5');
+                  } else {
+                      dot.classList.remove('bg-secondary', 'w-3');
+                      dot.classList.add('bg-white/20', 'w-1.5');
+                  }
+              });
+
+              const mobHotspot = document.getElementById('mobile-bike-hotspot');
+              if (mobHotspot) {
+                  const coord = mobileHotspotCoords[currentSpecsSlideIdx];
+                  mobHotspot.style.top = coord.top;
+                  mobHotspot.style.left = coord.left;
+              }
+          }
+
+          updateSpecsSlide(0);
+
+          const specsPrevBtn = document.getElementById('mobile-specs-prev');
+          const specsNextBtn = document.getElementById('mobile-specs-next');
+          if (specsPrevBtn) {
+              specsPrevBtn.addEventListener('click', () => {
+                  updateSpecsSlide(currentSpecsSlideIdx - 1);
+              });
+          }
+          if (specsNextBtn) {
+              specsNextBtn.addEventListener('click', () => {
+                  updateSpecsSlide(currentSpecsSlideIdx + 1);
+              });
+          }
+
+          let specsStartX = 0;
+          const carouselEl = document.getElementById('mobile-specs-carousel');
+          if (carouselEl) {
+              carouselEl.addEventListener('touchstart', (e) => {
+                  specsStartX = e.touches[0].clientX;
+              }, { passive: true });
+
+              carouselEl.addEventListener('touchend', (e) => {
+                  const deltaX = e.changedTouches[0].clientX - specsStartX;
+                  if (deltaX > 50) {
+                      updateSpecsSlide(currentSpecsSlideIdx - 1);
+                  } else if (deltaX < -50) {
+                      updateSpecsSlide(currentSpecsSlideIdx + 1);
+                  }
+              }, { passive: true });
+          }
+
+     });
 </script>
 </body></html>
